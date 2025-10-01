@@ -6,8 +6,6 @@ d=int(input("Enter fourth element of series"))
 A=[a,b,c,d]
 C=["A","B","C","D"]
 B=pd.Series(A, index=C)
-print(B)
 E=[2,5,7,6]
 D=pd.Series(E, index=C)
-print(D)
 print(A+D)
