@@ -1,552 +1,872 @@
-# NumPy Basics
-
----
-
-## 1. Installation & Config
-
-```python
-pip3 install numpy
+All the below codes have been tested today on Google Colab.
 ```
-Write above command in terminal and download it
+https://share.google/qAqU621grScG0OFpR
+```
+# NUMPY BASIC CODES
 
-```python
+```
+
+# Import Numpy Library
 import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
+from IPython.display import Image
 
-# Check version and config details
-print(np.__version__)     
-np.show_config()
-```
-**Output:**
-```
-1.26.4
-<library and compiler details>
-```
 
----
 
-## 2. Creating Arrays
-```python
-# 0D, 1D, 2D, 3D arrays
-a = np.array(42)                        
-b = np.array([1, 2, 3, 4, 5])           
-c = np.array([[1, 2, 3], [4, 5, 6]])    
-d = np.array([[[1, 2, 3], [4, 5, 6]], 
-              [[1, 2, 3], [4, 5, 6]]])  
+list1 = [10,20,30,40,50,60]
+list1
 
-print(a.ndim, b.ndim, c.ndim, d.ndim)   # prints dimensions
-```
-**Output:**
-```
-0 1 2 3
-```
 
-### Special Arrays
-```python
-print(np.full((2,2), 7))      # 2x2 matrix filled with 7
-print(np.zeros((2,3)))        # 2x3 matrix with all 0s
-print(np.ones((2,3)))         # 2x3 matrix with all 1s
-print(np.arange(1,10,2))      # range with step
-print(np.linspace(1,10,5))    # equally spaced numbers
-print(np.eye(3))              # identity matrix
-```
-**Output:**
-```
-[[7 7]
- [7 7]]
-[[0. 0. 0.]
- [0. 0. 0.]]
-[[1. 1. 1.]
- [1. 1. 1.]]
-[1 3 5 7 9]
-[ 1.    3.25  5.5   7.75 10.  ]
-[[1. 0. 0.]
- [0. 1. 0.]
- [0. 0. 1.]]
-```
+# Display the type of an object
+type(list1)
 
----
 
-## 3. Data Types
-```python
-arr = np.array([1,2,3,4])
-print(arr.dtype)              # int64 (default)
+# Convert list to Numpy Array
+arr1 = np.array(list1)
+arr1
 
-arr = np.array([1,2,3,4], dtype=np.int8)
-print(arr.dtype)              # int8
 
-arr = np.array([1,2,3,4], dtype='f')  
-print(arr, arr.dtype)         # float array
+# Memory address of an array object
+arr1.data
 
-print(arr.astype(int))        # convert float to int
-```
-**Output:**
-```
-int64
-int8
-[1. 2. 3. 4.] float32
-[1 2 3 4]
-```
 
----
 
-## 4. Arithmetic Operations
-```python
-arr = np.array([1,2,3,4])
-print(arr + 3)         # add scalar
-print(arr * 2)         # multiply scalar
+# Display type of an object
+type(arr1)
 
-a = np.array([1,2,3,4])
-b = np.array([1,2,3,4])
-print(a + b)           # element-wise addition
-print(np.subtract(a,b))# element-wise subtraction
-```
-**Output:**
-```
-[4 5 6 7]
-[2 4 6 8]
-[2 4 6 8]
-[0 0 0 0]
-```
 
----
+# Datatype of array
+arr1.dtype
 
-## 5. Random Numbers
-```python
-print(np.random.rand(4))      # #will generate 4 random numbers between 0 to 1
-print(np.random.randn(4))     # give random numbers which close to zero (both positive and negative)
-print(np.random.ranf(2))      # #will generate 4 random numbers with random float value in interval [0.0,1.0
-print(np.random.randint(3,10,4))  # #will generate 4 random numbers between [3,10]
-```
-**Output (random):**
-```
-[0.65 0.12 0.78 0.91]
-[-0.23  1.07 -0.56  0.44]
-[0.34 0.89]
-[4 8 6 9]
-```
 
----
+# Convert Integer Array to FLOAT
+arr1.astype(float)
 
-## 6. Useful Math Functions
-```python
-arr = np.array([8,3,9,10])
-print(np.min(arr), np.max(arr))   # min & max
-print(np.argmin(arr), np.argmax(arr)) # index of min & max
-print(np.sqrt(arr))               # square roots
-print(np.cumsum(arr))             # cumulative sum
-```
-**Output:**
-```
-3 10
-1 3
-[2.828 1.732 3.    3.162]
-[ 8 11 20 30]
-```
 
----
+# Generate evenly spaced numbers (space =1) between 0 to 10
+np.arange(0,10)
 
-## 7. Shape and Reshape
-```python
-arr = np.array([[1,2,3],[4,5,6]])
-print(arr.shape)           # shape
-print(arr.reshape(3,2))    # reshape
-```
-**Output:**
-```
-(2, 3)
-[[1 2]
- [3 4]
- [5 6]]
-```
 
----
+# Generate numbers between 0 to 100 with a space of 10
+np.arange(0,100,10)
 
-## 8. Indexing & Slicing
-```python
-arr = np.array([[1,2,3,4,5],[6,7,8,9,10]])
-print(arr[0,1])         # element
-print(arr[1,1:4])       # slice row
-print(arr[0:2,2])       # slice column
-print(arr[0:2,1:4])     # sub-matrix
-```
-**Output:**
-```
-2
-[7 8 9]
-[3 8]
-[[2 3 4]
- [7 8 9]]
-```
 
----
 
-## 9. Copy vs View
-Copy owns the data and view doesnot own the data. If we change original array or copy it does not affect each other but change in view or original array reflect in both. View is just a shallow copy which points to same memory of original array.
-```python
-arr = np.array([1,2,3])
-copy_arr = arr.copy()   # deep copy
-view_arr = arr.view()   # shallow copy
-arr[0] = 42
-print(copy_arr)         # unaffected
-print(view_arr)         # reflects change
-```
-**Output:**
-```
-[1 2 3]
-[42  2  3]
-```
+# Generate numbers between 10 to 100 with a space of 10 in descending order
+np.arange(100, 10, -10)
 
----
 
-## 10. Advanced Indexing
-```python
-arr = np.array([10,20,30,40,50])
-print(arr[[0,2,4]])            # fancy indexing
 
-mat = np.array([[1,2,3],
-                [4,5,6],
-                [7,8,9]])
-print(mat[[0,2],[1,2]])         # row,col pairs
-print(arr[arr > 25])            # boolean mask
-```
-**Output:**
-```
-[10 30 50]
-[2 9]
-[30 40 50]
-```
+# Shape of Array
+arr3 = np.arange(0,10)
+arr3.shape
 
----
 
-## 11. Ravel & Flatten
-```python
-x = np.array([[1,2,3],[4,5,6]])
-print(x.ravel())       # returns view
-print(x.flatten())     # returns copy
-```
-**Output:**
-```
-[1 2 3 4 5 6]
-[1 2 3 4 5 6]
-```
 
----
+# Size of array
+arr3.size
 
-## 12. Insert, Delete, Concatenate
-```python
-arr = np.array([10,20,30])
-print(np.insert(arr,1,99))   # insert element
-print(np.delete(arr,2))      # delete element
-print(np.concatenate(([1,2,3],[4,5,6])))  # merge arrays
-```
-**Output:**
-```
-[10 99 20 30]
-[10 20]
-[1 2 3 4 5 6]
-```
 
----
+# Bytes consumed by one element of an array object
+arr3.itemsize
 
-## 13. Stacking & Splitting
-```python
-a = np.array([1,2,3])
-b = np.array([4,5,6])
 
-print(np.vstack((a,b)))      # vertical stack
-print(np.hstack((a,b)))      # horizontal stack
+# Bytes consumed by an array object
+arr3.nbytes
 
-arr = np.array([1,2,3,4,5,6])
-print(np.split(arr,3))       # split into parts
 
-mat = np.array([[1,2,3,4],[5,6,7,8]])
-print(np.hsplit(mat,2))      # split columns
-```
-**Output:**
-```
-[[1 2 3]
- [4 5 6]]
-[1 2 3 4 5 6]
-[array([1, 2]), array([3, 4]), array([5, 6])]
-[array([[1, 2],
-       [5, 6]]), array([[3, 4],
-       [7, 8]])]
-```
+# Length of array
+len(arr3)
 
----
 
-## 14. Handling NaN & Infinity
-```python
-arr = np.array([1,2,np.nan,9])
-print(np.isnan(arr))                   # detect NaN
-print(np.nan_to_num(arr,nan=0))        # replace NaN
+# Generate an array of zeros
+np.zeros(10)
 
-arr = np.array([1,2,np.inf,-np.inf])
-print(np.isinf(arr))                   # detect inf
-print(np.nan_to_num(arr,posinf=40,neginf=-40))  # replace inf
-```
-**Output:**
-```
-[False False  True False]
-[1. 2. 0. 9.]
-[False False  True  True]
-[  1.   2.  40. -40.]
+
+# Generate an array of ones with given shape
+np.ones(10)
+
+
+
+# Repeat 10 five times in an array
+np.repeat(10,5)
+
+
+
+# Repeat each element in array 'a' thrice
+a= np.array([10,20,30])
+np.repeat(a,3)
+
+
+# Generate array of Odd numbers
+ar1 = np.arange(1,20)
+ar1[ar1%2 ==1]
+
+
+# Generate array of even numbers
+ar1 = np.arange(1,20)
+ar1[ar1%2 == 0]
+
+
+
+# Create an array of random values
+np.random.random(4)
+
+
+# Generate an array of Random Integer numbers
+np.random.randint(0,500,5)
+
+
+
+arr2 = np.arange(1,20)
+arr2
+
+
+# Sum of all elements in an array
+arr2.sum()
+
+# Cumulative Sum
+np.cumsum(arr2)
+
+
+# Find Minimum number in an array
+arr2.min()
+
+
+#  Find MAX number in an array
+arr2.max()
+
+
+# Find mean of all numbers in an array
+arr2.mean()
+
+
+# Find median of all numbers present in arr2
+np.median(arr2)
+
+
+# Variance
+np.var(arr2)
+
+# Standard deviation
+np.std(arr2)
+
+
+# Calculating percentiles
+np.percentile(arr2,70)
+
+
+A = np.array([[1,2,3,0] , [5,6,7,22] , [10 , 11 , 1 ,13] , [14,15,16,3]])
+A
+
+
+# SUM of all numbers in a 2D array
+A.sum()
+
+# MAX number in a 2D array
+A.max()
+
+# Minimum
+A.min()
+
+
+# Enumerate for Numpy 2D Arrays
+for index, value in np.ndenumerate(A):
+    print(index, value)
+
+
+
+a = np.array([7,5,3,9,0,2])
+
+
+# Access first element of the array
+a[0]
+
+# Access all elements of Array except first one.
+a[1:]
+
+
+# Fetch 2nd , 3rd & 4th value from the Array
+a[1:4]
+
+
+# Get last element of the array
+a[-1]
+
+
+ar = np.arange(1,20)
+ar
+
+
+# Replace EVEN numbers with ZERO
+rep1 = np.where(ar % 2 == 0, 0 , ar)
+print(rep1)
+
+
+
+# Replace 10 with value 99
+rep2 = np.where(ar2 == 10, 99 , ar2)
+print(rep2)
+
+
+
+p2 = np.arange(0,100,10)
+p2
+
+# Replace values at INDEX loc 0,3,5 with 33,55,99
+np.put(p2, [0, 3 , 5], [33, 55, 99])
+p2
+
+
+
+
+a = np.array([10, np.nan,20,30,60,np.nan,90,np.inf])
+a
+
+
+# Search for missing values and return as a boolean array
+np.isnan(a)
+
+
+# Index of missing values in an array
+np.where(np.isnan(a))
+
+
+# Replace all missing values with 99
+a[np.isnan(a)] = 99
+a
+
+
+# Check if array has any NULL value
+np.isnan(a).any()
+
+
+
+# Stack arrays vertically
+a = np.zeros(20).reshape(2,-1)
+b = np.repeat(1, 20).reshape(2,-1)
+a b
+
+np.vstack([a,b])
+
+
+
+# Stack arrays horizontally
+
+np.hstack([a,b])
+np.hstack([a1,b1])
+
+
+
+# Common items between two arrays
+
+c1 = np.array([10,20,30,40,50,60])
+c2 = np.array([12,20,33,40,55,60])
+np.intersect1d(c1,c2)
+
+
+
+# Remove common elements of C1 & C2 array from C1
+
+np.setdiff1d(c1,c2)
 ```
 
----
 
-## 15. Transpose & Dimensions
-```python
-mat = np.array([[1,2,3],[4,5,6]])
-print(mat.T)                  # transpose
 
-arr = np.array([1,2,3])
-print(np.expand_dims(arr,axis=0))  # add dimension
-print(np.squeeze([[1,2,3]]))       # remove dimension
-```
-**Output:**
-```
-[[1 4]
- [2 5]
- [3 6]]
-[[1 2 3]]
-[1 2 3]
+
+# PANDAS BASIC CODES
+
+
 ```
 
----
-
----
-
-## 16. `np.where()` – Conditional Selection
-```python
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import glob
+import re
+import math
 
-# Replace even numbers with 0, keep odd numbers as is
-x = np.array([1,2,3,4,5])
-y = np.where((x % 2 == 0), 0, x)  
-print(y)  # Output: [1 0 3 0 5]
+
+
+# Create series from Nump Array
+v = np.array([1,2,3,4,5,6,7])
+s1 = pd.Series(v)
+s1
+
+
+# Datatype of Series
+s1.dtype
+
+
+# number of bytes allocated to each item
+s1.itemsize
+
+
+
+# Number of bytes consumed by Series
+s1.nbytes
+
+
+
+# Shape of the Series
+s1.shape
+
+
+# number of dimensions
+s1.ndim
+
+s1.size
+
+s1.count()
+
+
+# Create series from List 
+s0 = pd.Series([1,2,3],index = ['a','b','c'])
+s0
+
+
+# Modifying index in Series
+s1.index = ['a' , 'b' , 'c' , 'd' , 'e' , 'f' , 'g']
+s1
+
+
+# Create Series using Random and Range function
+v2 = np.random.random(10)
+ind2 = np.arange(0,10)
+s = pd.Series(v2,ind2)
+v2 , ind2 , s
+
+
+# Creating Series from Dictionary
+dict1 = {'a1' :10 , 'a2' :20 , 'a3':30 , 'a4':40}
+s3 = pd.Series(dict1)
+s3
+
+
+
+pd.Series(99, index=[0, 1, 2, 3, 4, 5])
+
+
+s = [0,1,2,3,4,5,6,7,8,9,10]
+
+
+# Return all elements of the series
+s[:]
+
+
+# First three element of the Series
+s[0:3]
+
+# Last element of the Series
+s[-1:]
+
+
+# Fetch first 4 elements in a series
+s[:4]
+
+
+s2 = s1.copy()
+s2
+
+# Append S2 & S3 Series
+s4 = s2.append(s3)
+s4
+
+
+s4 = s4.append(pd.Series({'a4': 7}))
+s4
+
+
+v1 = np.array([10,20,30])
+v2 = np.array([1,2,3])
+s1 = pd.Series(v1) 
+s2 = pd.Series(v2)
+s1 , s2
+
+
+# Addition of two series
+s1.add(s2)
+
+
+# Subtraction of two series
+s1.sub(s2)
+
+
+# Increment all numbers in a series by 9
+s1.add(9)
+
+
+# Multiplication of two series
+s1.mul(s2)
+
+
+# Multiply each element by 1000
+s1.multiply(1000)
+
+
+# Division
+s1.divide(s2)
+
+
+# MAX number in a series
+s1.max()
+
+
+# Min number in a series
+s1.min()
+
+
+# Average
+s1.mean()
+
+
+# Median
+s1.median()
+
+
+# Standard Deviation
+s1.std()
+
+
+# Series comparison
+s1.equals(s2)
+
+
+s5 = pd.Series([1,1,2,2,3,3], index=[0, 1, 2, 3, 4, 5])
+s5
+
+s5.value_counts()
+
+
+
+# creating a dataframe
+df = pd.DataFrame()
+df
+
+
+# Create Dataframe using List
+lang = ['Java' , 'Python' , 'C' , 'C++']
+df = pd.DataFrame(lang)
+df
+
+
+
+# Add column in the Dataframe
+rating = [1,2,3,4]
+df[1] = rating
+df
+
+
+# Create Dataframe from Dictionary
+
+data = [{'a': 1, 'b': 2},{'a': 5, 'b': 10, 'c': 20}]
+
+df2 = pd.DataFrame(data)
+df3 = pd.DataFrame(data, index=['row1', 'row2'], columns=['a', 'b'])
+df4 = pd.DataFrame(data, index=['row1', 'row2'], columns=['a', 'b' ,'c'])
+df5 = pd.DataFrame(data, index=['row1', 'row2'], columns=['a', 'b' ,'c' , 'd'])
+
+
+
+
+dates = pd.date_range(start='2020-01-20', end='2020-01-26')
+dates
+
+
+
+dates = pd.date_range(start='2020-01-20', periods=7)
+dates
+
+
+M = np.random.random((7,7))
+M
+
+
+dframe = pd.DataFrame(M , index=dates)
+dframe
+
+
+
+# List Index
+dframe.index
+
+
+# List Column Names
+dframe.columns
+
+
+# Datatype of each column
+dframe.dtypes
+
+
+
+
+col1 = np.linspace(10, 100, 30)
+col2 = np.random.randint(10,100,30)
+df10 = pd.DataFrame({"C1" : col1 , "C2" :col2})
+df10
+
+# Delete rows with index values 17,18,19
+
+df10 = df10.drop([17,18,19], axis=0)
+df10
 ```
 
----
 
-## 17. Sorting an Array
-```python
-import numpy as np
 
-# Sort array in ascending order
-x = np.array([1,3,2,9,4,5])
-y = np.sort(x)
-print(y)  # Output: [1 2 3 4 5 9]
+
+
+# LINEAR ALGEBRA BASIC CODES
+
+
 ```
 
----
-
-## 18. `searchsorted()` – Find Insertion Index
-```python
 import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
-# Finds index where '2' should be inserted to keep order
-x = np.array([5,9,1,2,6,7])
-x1 = np.searchsorted(x, 2)  # By default searches from left
-print(x1)  # Output: 1
 
-x2 = np.searchsorted(x, 2, side="right")  # Search from right
-print(x2)  # Output: 4
+
+v = [3,4]
+u = [1,2,3]
+
+
+w = np.array([9,5,7])
+
+
+w.shape[0]
+
+
+a = np.array([7,5,3,9,0,2])
+
+# accessing the first element
+a[0]
+
+# accessing complete elements
+a[1:]
+
+#accessing last element
+a[-1]
+
+
+# Plotting a vector
+
+v = [3,4]
+u = [1,2,3]
+plt.plot (v)
+
+
+# Plotting 2D vector
+
+plt.plot([0,v[0]] , [0,v[1]])
+plt.plot([8,-8] , [0,0] , 'k--')
+plt.plot([0,0] , [8,-8] , 'k--')
+plt.grid()
+plt.axis((-8, 8, -8, 8))
+plt.show()
+
+
+# Plotting 3D vector
+
+fig = plt.figure()
+ax = Axes3D(fig)
+ax.plot([0,u[0]],[0,u[1]],[0,u[2]])
+plt.axis('equal')
+ax.plot([0, 0],[0, 0],[-5, 5],'k--')
+ax.plot([0, 0],[-5, 5],[0, 0],'k--')
+ax.plot([-5, 5],[0, 0],[0, 0],'k--')
+plt.show()
+
+
+#Vector Addition
+
+v1 = np.array([1,2])
+v2 = np.array([3,4])
+v3 = v1+v2
+v3 = np.add(v1,v2)
+print('V3 =' ,v3)
+plt.plot([0,v1[0]] , [0,v1[1]] , 'r' , label = 'v1')
+plt.plot([0,v2[0]] , [0,v2[1]], 'b' , label = 'v2')
+plt.plot([0,v3[0]] , [0,v3[1]] , 'g' , label = 'v3')
+plt.plot([8,-8] , [0,0] , 'k--')
+plt.plot([0,0] , [8,-8] , 'k--')
+plt.grid()
+plt.axis((-8, 8, -8, 8))
+plt.legend()
+plt.show()
+
+
+
+#Scalar Multiplication
+
+
+u1 = np.array([3,4])
+a = .5
+u2 = u1*a
+plt.plot([0,u1[0]] , [0,u1[1]] , 'r' , label = 'v1')
+plt.plot([0,u2[0]] , [0,u2[1]], 'b--' , label = 'v2')
+plt.plot([8,-8] , [0,0] , 'k--')
+plt.plot([0,0] , [8,-8] , 'k--')
+plt.grid()
+plt.axis((-8, 8, -8, 8))
+plt.legend()
+plt.show()
+
+a1 = [5 , 6 ,8]
+a2 = [4, 7 , 9]
+print(np.multiply(a1,a2))
+
+
+
+#Dot Product
+
+a1 = np.array([1,2,3])
+a2 = np.array([4,5,6])
+
+dotp = a1@a2
+print(" Dot product - ",dotp)
+
+
+
+#Cross Product
+
+v1 = np.array([1,2,3])
+v2 = np.array([4,5,6])
+print("\nVector Cross Product ==>  \n", np.cross(v1,v2))
+
+
+# Angle between vectors
+
+v1 = np.array([4,3])
+v2 = np.array([-3,4])
+lengthV1 = np.sqrt(np.dot(v1,v1)) 
+lengthV2  = np.sqrt(np.dot(v2,v2))
+ang = np.rad2deg(np.arccos( np.dot(v1,v2) / (lengthV1 * lengthV2)))
+print('Angle between Vectors - %s' %ang)
+
+
+
+#Length Of Vector 
+
+v3 = np.array([1,2,3,4,5,6])
+length = np.sqrt(np.dot(v3,v3))
+length
+
+v3 = np.array([1,2,3,4,5,6])
+length = np.sqrt(sum(np.multiply(v3,v3)))
+length
+
+
+
+
+# Normalized Vector
+
+
+v1 = [2,3]
+length_v1 = np.sqrt(np.dot(v1,v1))
+norm_v1 = v1/length_v1
+length_v1 , norm_v1
+
+
+
+
+# Inner and Outer Product
+
+v1 = np.array([1,2,3])
+v2 = np.array([4,5,6])
+np.inner(v1,v2)
+
+print("\n Inner Product ==>  \n", np.inner(v1,v2))
+print("\n Outer Product ==>  \n", np.outer(v1,v2))
+
+
+
+
+# Matrix Creation
+
+A = np.array([[1,2,3,4] , [5,6,7,8] , [10 , 11 , 12 ,13] , [14,15,16,17]])
+A
+
+type(A)
+
+A.shape
+
+
+#Zero Matrix
+
+
+np.zeros(9).reshape(3,3)
+
+np.zeros((3,3))
+
+
+
+# Matrix of Ones
+
+np.ones(9).reshape(3,3)
+
+np.ones((3, 3))
+
+
+
+# Matrix with Random Number
+
+X = np.random.random((3,3))
+X
+
+
+
+# Identity Matrix
+
+
+I = np.eye(9)
+I
+
+
+
+# Diagonal Matrix :-
+
+D = np.diag([1,2,3,4,5,6,7,8])
+D
+
+
+
+# Matrix Addition
+
+M = np.array([[1,2,3],[4,-3,6],[7,8,0]])
+N = np.array([[1,1,1],[2,2,2],[3,3,3]])
+
+C = np.add(M,N,dtype = np.float64)
+print("\n Matrix Addition using np.add  ==>  \n", C)
+
+
+
+# Matrix Subtraction
+
+
+C = np.subtract(M,N,dtype = np.float64)
+print("\n Matrix Subtraction using np.subtract  ==>  \n"
+
+
+
+
+# Matrix Scalar Multiplication
+
+
+M = np.array([[1,2,3],[4,-3,6],[7,8,0]])
+
+C = 10
+
+print("\nMatrices Scalar Multiplication ==>  \n", np.multiply(C,M))
+
+
+
+# Matrix Transpose
+
+
+M = np.array([[1,2,3],[4,-3,6],[7,8,0]])
+
+print("\nTranspose of M ==>  \n", M.T)
+
+
+
+# Matrix Determinant
+
+M = np.array([[1,2,3],[4,-3,6],[7,8,0]])
+
+print("\n Matrix (M)  ==>  \n", M)
+
+print("\nDeterminant of M ==>  ", np.linalg.det(M))
+
+
+
+
+# Matrix Rank
+
+M = np.array([[1,2,3],[4,-3,6],[7,8,0]])
+
+print("\n Matrix (M)  ==>  \n", M)
+
+print("\nRank of M ==> ", np.linalg.matrix_rank(M))
+
+
+
+
+# Inverse of Matrix
+
+
+M = np.array([[1,2,3],[4,-3,6],[7,8,0]])
+
+print("\n Matrix (M)  ==>  \n", M)
+
+print("\nInverse of M ==> \n", np.linalg.inv(M))
+
+
+
+
+# Trace of Matrix
+
+M = np.array([[1,2,3],[4,-3,6],[7,8,0]])
+
+print("\n Matrix (M)  ==>  \n", M)
+
+print("\nTrace of M ==> ", np.trace(M))
+
+
+
+# Matrix Dot Product
+M = np.array([[1,2,3],[4,-3,6],[7,8,0]])
+N = np.array([[1,1,1],[2,2,2],[3,3,3]])
+
+print("\n First Matrix (M)  ==>  \n", M)
+print("\n Second Matrix (N)  ==>  \n", N)
+
+print("\n Matrix Dot Product ==> \n", M@N)
+
+
+
+
+# Matrix Division
+M = np.array([[1,2,3],[4,-3,6],[7,8,0]])
+N = np.array([[1,1,1],[2,2,2],[3,3,3]])
+
+print("\n First Matrix (M)  ==>  \n", M)
+print("\n Second Matrix (N)  ==>  \n", N)
+
+
+print("\n Matrix Division (M/N)   ==> \n", M/N)
+
+
+
+
+# Sum of all elements in Matrix
+N = np.array([[1,1,1],[2,2,2],[3,3,3]])
+
+print("\n Matrix (N)  ==>  \n", N)
+
+
+print ("Sum of all elements in a Matrix  ==>")
+print (np.sum(N))
+
+
+
+# Column wise addition
+
+N = np.array([[1,1,1],[2,2,2],[3,3,3]])
+
+print("\n Matrix (N)  ==>  \n", N)
+
+print ("Column-Wise summation ==> ")
+print (np.sum(N,axis=0))
+
+
+
+# Row Wise addition
+N = np.array([[1,1,1],[2,2,2],[3,3,3]])
+
+print("\n Matrix (N)  ==>  \n", N)
+
+print ("Row-Wise summation  ==>")
+print (np.sum(N,axis=1))
 ```
-
----
-
-## 19. Filtering Array with Boolean Indexing
-```python
-import numpy as np
-
-# Use boolean list to filter array
-x = np.array([5,9,1,2,6,7])
-f = [True, False, True, True, False, True]  
-var3 = x[f]  
-print(var3)  # Output: [5 1 2 7]
-```
-
----
-
-## 20. Shuffling Array
-```python
-import numpy as np
-
-# Randomly shuffle elements of the array (in-place)
-x = np.array([5,9,1,2,6,7])
-np.random.shuffle(x)
-print(x)  # Output: (Random order each time, e.g. [2 7 1 5 6 9])
-```
-
----
-
-## 21. Unique Elements
-```python
-import numpy as np
-
-# Get unique values
-x = np.array([5,9,1,2,6,7,7,8,8,8,9,9])
-y = np.unique(x)
-print(y)  # Output: [1 2 5 6 7 8 9]
-
-# Unique values with their first index positions
-z = np.unique(x, return_index=True)
-print(z)
-
-# Unique values with their index positions and frequency count
-q = np.unique(x, return_index=True, return_count=True)
-print(q)
-```
-
----
-
-## 22. Resize Array
-```python
-import numpy as np
-
-# Reshape array into (3x2) dimension
-x = np.array([5,9,1,2,6,7,7,8,8,8,9,9])
-y = np.resize(x, (3,2))
-print(y)
-# Output:
-# [[5 9]
-#  [1 2]
-#  [6 7]]
-```
-
----
-
-## 23. Defining a Matrix
-```python
-import numpy as np
-
-# Create a 2D matrix
-var1 = np.matrix([[1,2,3], [4,5,6], [7,8,9]])
-print(var1)
-# Output:
-# [[1 2 3]
-#  [4 5 6]
-#  [7 8 9]]
-```
-
----
-
-## 24. Transpose & Swap Axes
-```python
-import numpy as np
-
-# Transpose a matrix
-var1 = np.matrix([[1,2,3], [4,5,6], [7,8,9]])
-print(var1.transpose())  
-print(var1.T)  # Shortcut for transpose
-
-# Swap rows and columns (same as transpose here)
-swapped = np.swapaxes(var1, 0, 1)
-print(swapped)
-```
-
----
-
-## 25. Swap Axes in 3D Array
-```python
-import numpy as np
-
-# Swap axis 0 and 2 in a 3D array
-var1 = np.array([[[1,2,3], [4,5,6], [7,8,9]]])
-swapped = np.swapaxes(var1, 0, 2)
-print(swapped)
-# Output:
-# [[[1]
-#   [4]
-#   [7]]
-#
-#  [[2]
-#   [5]
-#   [8]]
-#
-#  [[3]
-#   [6]
-#   [9]]]
-```
-
----
-
-## 26. Dot Product of Matrices
-```python
-import numpy as np
-
-# Matrix multiplication (dot product)
-var1 = np.matrix([[1,2,3], [4,5,6], [7,8,9]])
-var2 = np.matrix([[10,11,12], [13,14,15], [16,17,18]])
-
-var3 = var1 * var2  # Using operator
-var4 = np.dot(var1, var2)  # Using np.dot()
-print(var3)
-print(var4)
-# Output:
-# [[ 84  90  96]
-#  [201 216 231]
-#  [318 342 366]]
-```
-
----
-
-## 27. Inverse of a Matrix
-```python
-import numpy as np
-
-# Find inverse of a matrix
-var1 = np.matrix([[1,2,4], [4,5,6], [7,8,9]])
-print(np.linalg.inv(var1))  
-print(np.linalg.matrix_power(var1, -1))  # Alternative way
-# Output:
-# [[-1.5         3.         -1.5       ]
-#  [ 1.33333333 -2.66666667  1.33333333]
-#  [-0.16666667  0.33333333 -0.16666667]]
-```
-
----
-
-## 28. Matrix Power
-```python
-import numpy as np
-
-# Raise matrix to power 2
-var1 = np.matrix([[1,2,4], [4,5,6], [7,8,9]])
-print(np.linalg.matrix_power(var1, 2))
-# Output:
-# [[ 37  48  58]
-#  [ 72  99 126]
-#  [111 150 189]]
-```
-
----
-
-## 29. Determinant of a Matrix
-```python
-import numpy as np
-
-# Find determinant of a square matrix
-var1 = np.matrix([[1,2,3], [4,5,6], [7,8,9]])
-print(var1.shape)       # Output: (3, 3)
-print(np.linalg.det(var1))  # Output: 0.0 (since it's singular matrix)
-```
----
-
-## 30. To solve eqn.
-
-Let two eqn. be AX = B
-2x + y = 9
-x + y = 3
-
-```python
-import numpy as np
-
-# Make matrix A and B
-a = np.array([[2 1] , [1 1]])
-b = np.array([ 9 3 ])
-x = np.linalg.solve(a , b)
-print(x)
----
-
